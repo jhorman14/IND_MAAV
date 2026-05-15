@@ -1,0 +1,210 @@
+# Git Ignore - IND_MAAV Project
+
+# ===== AMBIENTE =====
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
+
+# ===== BACKEND - PHP =====
+/backend/vendor/
+/backend/node_modules/
+/backend/storage/logs/*
+!/backend/storage/logs/.gitkeep
+/backend/storage/app/*
+!/backend/storage/app/.gitkeep
+/backend/bootstrap/cache/*
+!/backend/bootstrap/cache/.gitkeep
+/backend/.php-cs-fixer.cache
+/backend/composer.lock
+/backend/public/storage
+/backend/public/hot
+
+# ===== FRONTEND - NODE =====
+/frontend/node_modules/
+/frontend/dist/
+/frontend/build/
+/frontend/.vite/
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/pnpm-debug.log*
+
+# ===== IDEs =====
+# VS Code
+/.vscode/
+!/.vscode/extensions.json
+/.vscode/*.log
+*.code-workspace
+
+# PhpStorm / IntelliJ
+/.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+.vim/
+.swp
+.swo
+*~
+
+# Nano
+.~*
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ===== SISTEMA OPERATIVO =====
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
+
+# ===== ARCHIVOS TEMPORALES =====
+*.log
+*.logs
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+.cache
+.codeshot/
+.parcel-cache
+.next/
+out/
+
+# ===== BASES DE DATOS =====
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+*.pgdump
+*.dump
+
+# ===== BUILD =====
+/backend/public/css/
+/backend/public/js/
+/backend/build/
+/backend/dist/
+/frontend/dist/
+
+# ===== COVERAGE =====
+/coverage/
+/htmlcov/
+/.nyc_output/
+coverage.xml
+.coverage
+
+# ===== DOCKER =====
+docker-compose.override.yml
+.dockerignore
+
+# ===== CERTIFICADOS SSL =====
+*.pem
+*.key
+*.crt
+*.csr
+ssl/
+
+# ===== UPLOADS Y ARCHIVOS DINÁMICOS =====
+/backend/storage/uploads/*
+!/backend/storage/uploads/.gitkeep
+/public/uploads/*
+!/public/uploads/.gitkeep
+/tmp/*
+!/tmp/.gitkeep
+
+# ===== ARCHIVOS PERSONALES =====
+.todo
+.notes
+personal/
+NOTAS.md
+
+# ===== DEPENDENCIAS OPCIONALES =====
+package-lock.json
+yarn.lock
+
+# ===== API KEYS Y SECRETOS =====
+.aws/
+.gcloud/
+credentials/
+secrets/
+tokens/
+
+# ===== ARCHIVOS DE PROYECTO ESPECÍFICOS =====
+dist/
+build/
+out/
+*.egg-info/
+.pytest_cache/
+.tox/
+htmlcov/
+
+# ===== NETLIFY =====
+/.netlify/
+.netlify/
+
+# ===== VERCEL =====
+.vercel/
+
+# ===== PM2 =====
+.pm2/
+
+# ===== GIT =====
+.git/
+.gitmodules
+
+# ===== ARCHIVOS DEL SO (SO ESPECIFICO) =====
+# Windows específico
+*.exe
+*.dll
+*.lib
+*.a
+
+# macOS específico
+.env.local.php
+
+# Linux específico
+*.so
+
+# ===== CONFIGURACIÓN LOCAL (Ignore pero permite patterns específicos) =====
+# Permitir .env.example (template)
+!.env.example
+!.env.production.example
+
+# Permitir .gitkeep
+!.gitkeep
+
+# Permitir docker-compose.yml
+!docker-compose.yml
+!docker-compose.override.yml.example
+
+# Permitir archivos de configuración
+!.htaccess
+!.nginx.conf
+!/config/
+!/docker/
