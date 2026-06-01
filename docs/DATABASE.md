@@ -2,7 +2,7 @@
 
 **Motor:** PostgreSQL 13+  
 **Codificación:** UTF-8  
-**Versión del Schema:** 1.0
+**Versión del Schema:** 2.0
 
 ---
 
@@ -24,12 +24,16 @@ La base de datos está organizada en los siguientes módulos:
 | Módulo | Tablas | Descripción |
 |--------|--------|-------------|
 | **Usuarios** | users, user_addresses | Gestión de usuarios y direcciones |
-| **Productos** | products, categories, product_images, product_specs | Catálogo de productos |
+| **Productos** | products, categories, product_images, product_specifications | Catálogo de productos |
 | **Carrito** | cart_items | Carrito de compras |
-| **Órdenes** | orders, order_items | Gestión de pedidos |
+| **Órdenes** | orders, order_items, order_state_history | Gestión de pedidos y cambios de estado |
 | **Pagos** | payments | Registro de pagos |
+| **Devoluciones** | returns | Gestión de devoluciones (Ley 1480) |
+| **Reseñas** | reviews | Calificaciones y comentarios de productos |
 | **Envíos** | shipping_zones, shipping_rates, shipments | Gestión de envíos |
-| **Promociones** | promotions, promotion_items | Códigos y descuentos |
+| **Promociones** | promotions, promotion_items, user_coupons | Códigos y descuentos |
+| **Inventario** | inventory_movements | Auditoría de movimientos de stock |
+| **Favoritos** | wishlists | Lista de deseos de usuarios |
 | **Auditoría** | audit_logs, activity_logs | Registros de cambios |
 
 ---
@@ -234,6 +238,8 @@ CREATE TABLE orders (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     numero_orden VARCHAR(20) NOT NULL UNIQUE,
     usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    nombre_cliente VARCHAR(255) NOT NULL,
+    email_cliente VARCHAR(255) NOT NULL,
     estado ENUM('pendiente_pago', 'pagado', 'preparando', 'enviado', 'entregado', 'cancelado', 'reembolsado') DEFAULT 'pendiente_pago',
     subtotal NUMERIC(12, 2) NOT NULL,
     impuesto_iva NUMERIC(12, 2) NOT NULL,
@@ -244,6 +250,9 @@ CREATE TABLE orders (
     ciudad_envio VARCHAR(100) NOT NULL,
     departamento_envio VARCHAR(100) NOT NULL,
     codigo_postal_envio VARCHAR(20),
+    direccion_facturacion VARCHAR(500),
+    ciudad_facturacion VARCHAR(100),
+    departamento_facturacion VARCHAR(100),
     telefono_contacto VARCHAR(20),
     tipo_envio ENUM('express', 'estandar') DEFAULT 'estandar',
     metodo_pago VARCHAR(50),
@@ -257,6 +266,7 @@ CREATE TABLE orders (
 CREATE INDEX idx_orders_numero_orden ON orders(numero_orden);
 CREATE INDEX idx_orders_usuario_id ON orders(usuario_id);
 CREATE INDEX idx_orders_estado ON orders(estado);
+CREATE INDEX idx_orders_email_cliente ON orders(email_cliente);
 CREATE INDEX idx_orders_creado_en ON orders(creado_en);
 CREATE INDEX idx_orders_fecha_envio ON orders(fecha_envio);
 ```
@@ -292,6 +302,7 @@ Almacena los pagos procesados.
 CREATE TABLE payments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     orden_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    email_cliente VARCHAR(255) NOT NULL,
     monto NUMERIC(12, 2) NOT NULL,
     moneda VARCHAR(3) DEFAULT 'COP',
     estado ENUM('pendiente', 'aprobado', 'rechazado', 'cancelado', 'reembolsado') DEFAULT 'pendiente',
@@ -310,6 +321,7 @@ CREATE TABLE payments (
 
 CREATE INDEX idx_payments_orden_id ON payments(orden_id);
 CREATE INDEX idx_payments_estado ON payments(estado);
+CREATE INDEX idx_payments_email_cliente ON payments(email_cliente);
 CREATE INDEX idx_payments_referencia_mercadopago ON payments(referencia_mercadopago);
 CREATE INDEX idx_payments_creado_en ON payments(creado_en);
 ```
@@ -484,6 +496,151 @@ CREATE INDEX idx_activity_logs_creado_en ON activity_logs(creado_en);
 
 ---
 
+### 18. returns
+
+Almacena solicitudes de devolución (Ley 1480/2011 - 30 días).
+
+```sql
+CREATE TABLE returns (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    orden_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    motivo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    estado ENUM('solicitada', 'aprobada', 'rechazada', 'recibida', 'procesada') DEFAULT 'solicitada',
+    fecha_solicitud TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_recepcion TIMESTAMP,
+    fecha_procesamiento TIMESTAMP,
+    monto_reembolso NUMERIC(12, 2),
+    notas_admin TEXT,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_returns_orden_id ON returns(orden_id);
+CREATE INDEX idx_returns_usuario_id ON returns(usuario_id);
+CREATE INDEX idx_returns_estado ON returns(estado);
+CREATE INDEX idx_returns_creado_en ON returns(creado_en);
+```
+
+---
+
+### 19. reviews
+
+Almacena reseñas y calificaciones de productos.
+
+```sql
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    producto_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    calificacion INTEGER NOT NULL CHECK (calificacion >= 1 AND calificacion <= 5),
+    titulo VARCHAR(255),
+    comentario TEXT,
+    compra_verificada BOOLEAN DEFAULT FALSE,
+    orden_id UUID REFERENCES orders(id) ON DELETE SET NULL,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_reviews_producto_id ON reviews(producto_id);
+CREATE INDEX idx_reviews_usuario_id ON reviews(usuario_id);
+CREATE INDEX idx_reviews_compra_verificada ON reviews(compra_verificada);
+CREATE UNIQUE INDEX idx_reviews_unique_usuario_producto ON reviews(producto_id, usuario_id);
+```
+
+---
+
+### 20. order_state_history
+
+Almacena el historial de cambios de estado de órdenes.
+
+```sql
+CREATE TABLE order_state_history (
+    id SERIAL PRIMARY KEY,
+    orden_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+    estado_anterior VARCHAR(50),
+    estado_nuevo VARCHAR(50) NOT NULL,
+    usuario_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    comentario TEXT,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_order_state_history_orden_id ON order_state_history(orden_id);
+CREATE INDEX idx_order_state_history_usuario_id ON order_state_history(usuario_id);
+CREATE INDEX idx_order_state_history_creado_en ON order_state_history(creado_en);
+```
+
+---
+
+### 21. inventory_movements
+
+Almacena movimientos de inventario para auditoría.
+
+```sql
+CREATE TABLE inventory_movements (
+    id SERIAL PRIMARY KEY,
+    producto_id INTEGER NOT NULL REFERENCES products(id) ON DELETE RESTRICT,
+    cantidad_anterior INTEGER NOT NULL,
+    cantidad_nueva INTEGER NOT NULL,
+    cantidad_movida INTEGER NOT NULL,
+    motivo ENUM('compra', 'devolucion', 'ajuste_manual', 'perdida', 'entrada_inventario') DEFAULT 'ajuste_manual',
+    referencia_id VARCHAR(100),
+    referencia_tipo VARCHAR(50),
+    usuario_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    notas TEXT,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_inventory_movements_producto_id ON inventory_movements(producto_id);
+CREATE INDEX idx_inventory_movements_motivo ON inventory_movements(motivo);
+CREATE INDEX idx_inventory_movements_referencia_id ON inventory_movements(referencia_id);
+CREATE INDEX idx_inventory_movements_creado_en ON inventory_movements(creado_en);
+```
+
+---
+
+### 22. user_coupons
+
+Almacena cupones asignados a usuarios.
+
+```sql
+CREATE TABLE user_coupons (
+    id SERIAL PRIMARY KEY,
+    usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    promocion_id INTEGER NOT NULL REFERENCES promotions(id) ON DELETE CASCADE,
+    usado BOOLEAN DEFAULT FALSE,
+    fecha_uso TIMESTAMP,
+    orden_id UUID REFERENCES orders(id) ON DELETE SET NULL,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_user_coupons_usuario_id ON user_coupons(usuario_id);
+CREATE INDEX idx_user_coupons_promocion_id ON user_coupons(promocion_id);
+CREATE INDEX idx_user_coupons_usado ON user_coupons(usado);
+CREATE UNIQUE INDEX idx_user_coupons_unique ON user_coupons(usuario_id, promocion_id);
+```
+
+---
+
+### 23. wishlists
+
+Almacena la lista de deseos de usuarios.
+
+```sql
+CREATE TABLE wishlists (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    usuario_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    producto_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+    creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_wishlists_usuario_id ON wishlists(usuario_id);
+CREATE INDEX idx_wishlists_producto_id ON wishlists(producto_id);
+CREATE UNIQUE INDEX idx_wishlists_unique ON wishlists(usuario_id, producto_id);
+```
+
+---
+
 ## Relaciones
 
 ```
@@ -492,6 +649,12 @@ users
 ├── cart_items (1:N)
 ├── orders (1:N)
 ├── payments (1:N) [indirecta]
+├── returns (1:N)
+├── reviews (1:N)
+├── order_state_history (1:N)
+├── inventory_movements (1:N)
+├── user_coupons (1:N)
+├── wishlists (1:N)
 ├── promotion_items (1:N)
 ├── audit_logs (1:N)
 └── activity_logs (1:N)
@@ -506,20 +669,28 @@ products
 ├── product_specifications (1:N)
 ├── cart_items (1:N)
 ├── order_items (1:N)
+├── reviews (1:N)
+├── wishlists (1:N)
+├── inventory_movements (1:N)
 └── orders (1:N) [indirecta]
 
 orders
 ├── order_items (1:N)
 ├── payments (1:N)
+├── returns (1:N)
+├── order_state_history (1:N)
 ├── shipments (1:N)
 ├── promotion_items (1:N)
+├── user_coupons (1:N)
+├── reviews (1:N)
 └── activity_logs (1:N) [indirecta]
 
 shipping_zones
 └── shipping_rates (1:N)
 
 promotions
-└── promotion_items (1:N)
+├── promotion_items (1:N)
+└── user_coupons (1:N)
 ```
 
 ---
@@ -549,6 +720,12 @@ erDiagram
     USERS ||--o{ CART_ITEMS : contiene
     USERS ||--o{ ORDERS : realiza
     USERS ||--o{ PAYMENTS : realiza
+    USERS ||--o{ RETURNS : solicita
+    USERS ||--o{ REVIEWS : escribe
+    USERS ||--o{ ORDER_STATE_HISTORY : cambia
+    USERS ||--o{ INVENTORY_MOVEMENTS : registra
+    USERS ||--o{ USER_COUPONS : asigna
+    USERS ||--o{ WISHLISTS : desea
     USERS ||--o{ PROMOTION_ITEMS : usa
     USERS ||--o{ AUDIT_LOGS : genera
     USERS ||--o{ ACTIVITY_LOGS : genera
@@ -560,13 +737,20 @@ erDiagram
     PRODUCTS ||--o{ PRODUCT_SPECIFICATIONS : describe
     PRODUCTS ||--o{ CART_ITEMS : incluye
     PRODUCTS ||--o{ ORDER_ITEMS : incluye
+    PRODUCTS ||--o{ REVIEWS : recibe
+    PRODUCTS ||--o{ WISHLISTS : en-deseo
+    PRODUCTS ||--o{ INVENTORY_MOVEMENTS : movimientos
     
     CART_ITEMS }o--|| USERS : pertenece
     CART_ITEMS }o--|| PRODUCTS : contiene
     
     ORDERS ||--o{ ORDER_ITEMS : contiene
     ORDERS ||--o{ PAYMENTS : tiene
+    ORDERS ||--o{ RETURNS : puede-devolver
     ORDERS ||--o{ SHIPMENTS : genera
+    ORDERS ||--o{ ORDER_STATE_HISTORY : registra-cambios
+    ORDERS ||--o{ USER_COUPONS : aplica
+    ORDERS ||--o{ REVIEWS : genera
     ORDERS }o--|| USERS : realiza
     
     ORDER_ITEMS }o--|| ORDERS : pertenece
@@ -575,6 +759,7 @@ erDiagram
     SHIPPING_ZONES ||--o{ SHIPPING_RATES : define
     
     PROMOTIONS ||--o{ PROMOTION_ITEMS : tiene
+    PROMOTIONS ||--o{ USER_COUPONS : asigna
     PROMOTIONS }o--|| CATEGORIES : aplica
     
     PROMOTION_ITEMS }o--|| USERS : usa
@@ -582,6 +767,26 @@ erDiagram
     PROMOTION_ITEMS }o--|| ORDERS : aplica
 
     SHIPMENTS }o--|| ORDERS : rastrea
+    
+    RETURNS }o--|| ORDERS : devuelve
+    RETURNS }o--|| USERS : solicita
+    
+    REVIEWS }o--|| PRODUCTS : califca
+    REVIEWS }o--|| USERS : escribe
+    REVIEWS }o--|| ORDERS : valida
+    
+    ORDER_STATE_HISTORY }o--|| ORDERS : registra
+    ORDER_STATE_HISTORY }o--|| USERS : crea
+    
+    INVENTORY_MOVEMENTS }o--|| PRODUCTS : afecta
+    INVENTORY_MOVEMENTS }o--|| USERS : registra
+    
+    USER_COUPONS }o--|| USERS : posee
+    USER_COUPONS }o--|| PROMOTIONS : referencia
+    USER_COUPONS }o--|| ORDERS : aplica
+    
+    WISHLISTS }o--|| USERS : posee
+    WISHLISTS }o--|| PRODUCTS : contiene
 ```
 
 ---
@@ -941,5 +1146,6 @@ CREATE INDEX idx_activity_logs_creado_en ON activity_logs(creado_en);
 
 ---
 
-**Última actualización:** 25 de enero de 2024  
-**Versión del Schema:** 1.0
+**Última actualización:** 1 de junio de 2026  
+**Versión del Schema:** 2.0  
+**Cambios:** Agregadas tablas returns, reviews, order_state_history, inventory_movements, user_coupons, wishlists. Campos email_cliente y nombre_cliente en orders. Campo email_cliente en payments.
