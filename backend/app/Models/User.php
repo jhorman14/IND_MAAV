@@ -2,31 +2,93 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Model
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, SoftDeletes;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    protected $keyType = 'string';
+    public $incrementing = false;
+
+    protected $fillable = [
+        'nombre',
+        'email',
+        'password_hash',
+        'rol',
+        'estado',
+        'telefono',
+        'movil',
+        'ubicacion_fisica',
+        'email_verificado',
+    ];
+
+    protected $hidden = [
+        'password_hash',
+    ];
+
+    protected $casts = [
+        'email_verificado' => 'boolean',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+    ];
+
+    // Relaciones
+    public function userAddresses()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(UserAddress::class);
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function returns()
+    {
+        return $this->hasMany(ProductReturn::class);
+    }
+
+    public function userCoupons()
+    {
+        return $this->hasMany(UserCoupon::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function orderStateHistories()
+    {
+        return $this->hasMany(OrderStateHistory::class);
+    }
+
+    public function inventoryMovements()
+    {
+        return $this->hasMany(InventoryMovement::class);
+    }
+
+    public function auditLogs()
+    {
+        return $this->hasMany(AuditLog::class, 'usuario_id');
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class, 'usuario_id');
     }
 }
