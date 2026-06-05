@@ -1,403 +1,299 @@
-# IND-MAAV | E-Commerce Muebles Industriales
+# IND_MAAV — Enterprise-Grade Management System
 
-**Una plataforma de comercio electrónico moderna, segura y escalable para la venta de muebles industriales en Colombia.**
+[![Project Status: WIP](https://img.shields.io/badge/Project%20Status-Work%20In%20Progress-orange.svg)](https://github.com/jhorman14/IND_MAAV)
+[![Backend](https://img.shields.io/badge/Backend-Laravel%2011-red.svg)](https://laravel.com)
+[![Frontend](https://img.shields.io/badge/Frontend-React%2018-blue.svg)](https://react.dev)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL-darkblue.svg)](https://www.postgresql.org)
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4.svg)
-![React](https://img.shields.io/badge/React-18%2B-61DAFB.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13%2B-336791.svg)
+**IND_MAAV** es una plataforma Full-Stack para la gestión de ventas, inventario y operaciones de negocios de muebles industriales. Con fuerte enfoque en backend, integridad de datos y diseño de APIs, está diseñada para resolver un problema real: centralizar el catálogo, el cálculo de envíos y el flujo de órdenes con una API robusta y escalable.
 
 ---
 
-## 📋 Tabla de Contenidos
+## 📋 Contenido
 
-- [Descripción](#-descripción)
-- [Características](#-características)
+- [Estado Actual](#-estado-actual)
+- [Problema que resuelve](#-problema-que-resuelve)
+- [Decisiones Técnicas](#-decisiones-técnicas)
 - [Stack Tecnológico](#-stack-tecnológico)
+- [Preview](#-preview)
+- [Ejemplo de API](#-ejemplo-de-api)
+- [Lo que demuestra este proyecto](#-lo-que-demuestra-este-proyecto)
+- [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Requisitos](#-requisitos)
-- [Instalación Rápida](#-instalación-rápida)
+- [Instalación](#-instalación)
 - [Documentación](#-documentación)
 - [Roadmap](#-roadmap)
 - [Contribución](#-contribución)
+- [Sobre el desarrollador](#-sobre-el-desarrollador)
 - [Licencia](#-licencia)
-- [Contacto](#-contacto)
 
 ---
 
-## 📝 Descripción
+## 🚧 Estado Actual
 
-**IND-MAAV** es una plataforma completa de e-commerce diseñada específicamente para la comercialización de muebles industriales en Colombia. Integra todas las funcionalidades necesarias para una operación de venta en línea profesional:
+*Progreso estimado:* ~15% de la visión global.
 
-✅ Catálogo dinámico de productos  
-✅ Carrito de compras inteligente  
-✅ Integración con MercadoPago  
-✅ Gestión de órdenes y entregas  
-✅ Cálculo automático de envíos  
-✅ Panel administrativo completo  
-✅ Cumplimiento normativo colombiano  
-✅ Responsive y moderno  
+*Fase actual:* Diseño de arquitectura base, modelado relacional, migraciones iniciales e implementación de un núcleo de autenticación y API REST.
+
+> Este repositorio no es un producto terminado. Está en evolución y enfocado en consolidar una base técnica sólida antes de escalar funcionalidades.
 
 ---
 
-## ⭐ Características
+## 🖥️ Preview
 
-### Para Clientes
-- 🔐 Registro y autenticación segura con JWT
-- 🛍️ Búsqueda avanzada y filtros de productos
-- 🛒 Carrito persistente
-- 💳 Integración con MercadoPago (tarjeta, PSE, efectivo)
-- 📦 Seguimiento de órdenes en tiempo real
-- 🚚 Cálculo automático de envíos
-- 👤 Gestión de perfil y direcciones
-- 📧 Notificaciones por email
+> En progreso: capturas de pantalla y documentación visual del sistema.
 
-### Para Administradores
-- 📊 Dashboard con métricas en tiempo real
-- 📦 Gestión completa de productos y categorías
-- 📋 Administración de órdenes
-- 💰 Reportes de ventas
-- 📈 Análisis de comportamiento del cliente
-- 🚚 Gestión de zonas y tarifas de envío
-- 🏷️ Promociones y códigos descuento
-- 🔍 Auditoría de cambios
+---
 
-### Técnicas
-- API REST completa y documentada
-- Autenticación JWT
-- Rate limiting
-- Logging y auditoría
-- Seguridad CORS
-- Encriptación de datos sensibles
-- Manejo de errores robusto
+## 🧩 Problema que resuelve
+
+IND_MAAV ayuda a empresas de muebles industriales a digitalizar su ciclo de ventas y operaciones internas, con foco en:
+
+- Catálogo de productos y categorías con inventario controlado.
+- Gestión de órdenes y seguimiento de envíos.
+- Cálculo de tarifas de envío con zonas y reglas.
+- Integración de pagos seguros para el checkout.
+- Panel administrativo para control operativo.
+
+### Usuario objetivo
+
+- Administradores operativos de tiendas B2B/B2C.
+- Equipos de logística que necesitan control de envíos.
+- Clientes corporativos que compran muebles industriales en línea.
+
+---
+
+## 🏗️ Decisiones Técnicas
+
+**Stack principal:** Laravel 11 + React 18 + PostgreSQL.
+
+### Enfoque arquitectónico
+- API-first con controladores delgados.
+- Validación basada en Form Requests.
+- Respuestas JSON normalizadas con API Resources.
+- Eloquent tipado y relaciones claras.
+- Separación fuerte entre lógica de negocio y transporte.
+
+### Principios aplicados
+- Integridad referencial y modelo relacional normalizado.
+- Evitar `N+1` usando eager loading.
+- Manejo de errores consistente y códigos HTTP semánticos.
+- Seguridad sobre conveniencia: autenticación stateless y CORS controlado.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
-| **Backend** | PHP + Laravel | 8.0+ |
-| **Frontend** | React | 18.0+ |
-| **Base de Datos** | PostgreSQL | 13.0+ |
-| **Pagos** | MercadoPago API | v1 |
-| **Autenticación** | JWT | HS256 |
-| **Servidor** | Nginx / Apache | Latest |
-| **Contenedorización** | Docker | 20.0+ |
+| Capa | Tecnología | Comentario |
+|------|------------|------------|
+| **Backend** | PHP 8.2+ / Laravel 11 | API REST estructurada |
+| **Frontend** | React 18 | Vite + UI desacoplada |
+| **Base de datos** | PostgreSQL | Modelo transaccional |
+| **Autenticación** | JWT / Sanctum | Stateless tokenizado |
+| **Pagos** | MercadoPago API | Integración de pagos locales |
+| **Contenedores** | Docker | Opcional para desarrollo |
 
-### Dependencias Principales
+---
 
-**Backend:**
-- laravel/framework
-- tymon/jwt-auth
-- spatie/laravel-query-builder
-- spatie/laravel-activitylog
-- mercadopago/dx-php
+## 🔌 Ejemplo de API
 
-**Frontend:**
-- react
-- react-router-dom
-- axios
-- zustand
-- tailwindcss
-- @mercadopago/sdk-js
+### POST /api/v1/auth/login
+
+Request:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "Secret123!"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": 1,
+    "name": "Juan Perez",
+    "email": "user@example.com"
+  }
+}
+```
+
+### GET /api/v1/products
+
+Response:
+
+```json
+[
+  {
+    "id": 12,
+    "name": "Mesa industrial acero",
+    "price": 1249000,
+    "stock": 18,
+    "category": "Mobiliario"
+  }
+]
+```
+
+### POST /api/v1/orders
+
+Request:
+
+```json
+{
+  "user_id": 1,
+  "items": [
+    { "product_id": 12, "quantity": 2 }
+  ],
+  "shipping_zone_id": 3,
+  "payment_method": "mercadopago"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 101,
+  "status": "pending",
+  "total": 2498000,
+  "shipping_cost": 42000,
+  "items_count": 2
+}
+```
+
+---
+
+## 🧠 Lo que demuestra este proyecto
+
+- Diseño de APIs REST estructuradas y con contratos claros.
+- Modelado relacional en PostgreSQL con migraciones y relaciones Eloquent.
+- Separación de responsabilidades usando controladores, requests y resources.
+- Implementación de autenticación stateless y seguridad básica.
+- Mentalidad de arquitectura escalable y código mantenible.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```text
+backend/app/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   └── Resources/
+├── Models/
+└── Providers/
+```
+
+- `backend/`: backend Laravel, API y modelo de datos.
+- `frontend/`: SPA React consumiendo la API.
+- `docs/`: documentación técnica y de despliegue.
 
 ---
 
 ## 📦 Requisitos
 
-### Previos
-
-- **PHP** 8.0 o superior
-- **Node.js** 16.0 o superior
-- **npm** 8.0 o superior
-- **PostgreSQL** 13.0 o superior
-- **Composer** 2.0 o superior
-- **Git** 2.0 o superior
-
-### Sistema Operativo
-
-- ✅ Windows 10+
-- ✅ macOS 10.14+
-- ✅ Linux (Ubuntu 18.04+, Debian 10+)
+- PHP 8.2+
+- Composer 2+
+- Node.js 16+
+- npm 8+
+- PostgreSQL 13+
+- Git
 
 ---
 
-## 🚀 Instalación Rápida
-
-### 1. Clonar Repositorio
-
-```bash
-git clone https://github.com/tuempresa/ind-maav.git
-cd ind-maav
-```
-
-### 2. Configurar Backend
-
-```bash
-cd backend
-
-# Instalar dependencias
-composer install
-
-# Copiar archivo de configuración
-cp .env.example .env
-
-# Generar clave de aplicación
-php artisan key:generate
-
-# Configurar base de datos en .env
-# DB_HOST=localhost
-# DB_DATABASE=ind_maav
-# DB_USERNAME=postgres
-# DB_PASSWORD=tu_password
-
-# Ejecutar migraciones
-php artisan migrate
-
-# Iniciar servidor
-php artisan serve
-```
-
-**Backend disponible en:** `http://localhost:8000`
-
-### 3. Configurar Frontend
-
-```bash
-cd frontend
-
-# Instalar dependencias
-npm install
-
-# Crear archivo de configuración
-cp .env.example .env
-
-# Iniciar servidor de desarrollo
-npm run dev
-```
-
-**Frontend disponible en:** `http://localhost:5173`
-
-### 4. Verificar Instalación
-
-```bash
-# Probar registro
-curl -X POST http://localhost:8000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"nombre":"Test","email":"test@test.com","password":"Test1234!"}'
-
-# Probar productos
-curl http://localhost:8000/api/v1/productos
-```
-
-**✅ ¡Listo!** La plataforma está lista para usar.
-
----
-
-## 📚 Documentación
-
-Toda la documentación técnica está en la carpeta `/docs/`:
-
-### Documentos Principales
-
-| Documento | Descripción |
-|-----------|-------------|
-| [**API.md**](docs/API.md) | 📡 Documentación completa de endpoints REST |
-| [**DATABASE.md**](docs/DATABASE.md) | 🗄️ Schema PostgreSQL y diagramas ER |
-| [**MERCADOPAGO.md**](docs/MERCADOPAGO.md) | 💳 Guía de integración de pagos |
-| [**SETUP.md**](docs/SETUP.md) | ⚙️ Instrucciones de instalación paso a paso |
-| [**FLUJOS.md**](docs/FLUJOS.md) | 🔄 Diagramas de procesos y flujos críticos |
-| [**LEGAL.md**](docs/LEGAL.md) | ⚖️ Términos, políticas y normativa colombiana |
-| [**DEPLOYMENT.md**](docs/DEPLOYMENT.md) | 🌍 Guía de despliegue en producción |
-
----
-
-## 🎯 Roadmap
-
-### Fase 1: MVP (Enero 2024) ✅
-- [x] Autenticación de usuarios
-- [x] Catálogo de productos
-- [x] Carrito de compras
-- [x] Integración MercadoPago
-- [x] Gestión básica de órdenes
-- [x] API REST documentada
-
-### Fase 2: Mejoras (Febrero-Marzo 2024)
-- [ ] Panel administrativo completo
-- [ ] Reportes avanzados
-- [ ] Sistema de promociones
-- [ ] Notificaciones por SMS
-- [ ] Calificaciones de productos
-- [ ] Wishlist / Favoritos
-
-### Fase 3: Escalabilidad (Abril 2024)
-- [ ] Caché Redis
-- [ ] Búsqueda con Elasticsearch
-- [ ] CDN para imágenes
-- [ ] Microservicios
-- [ ] Kubernetes
-- [ ] App móvil (React Native)
-
-### Fase 4: Optimización (Mayo-Junio 2024)
-- [ ] PWA
-- [ ] Análitica avanzada
-- [ ] Integración redes sociales
-- [ ] Chatbot de soporte
-- [ ] Inteligencia artificial
-- [ ] Blockchain para verificación
-
----
-
-## 🔧 Comandos Útiles
+## 🚀 Instalación
 
 ### Backend
 
 ```bash
-# Migraciones
-php artisan migrate              # Ejecutar migraciones
-php artisan migrate:rollback     # Deshacer migraciones
-php artisan db:seed              # Poblar base de datos
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-# Caché y compilación
-php artisan cache:clear
-php artisan route:clear
-php artisan config:clear
-php artisan view:clear
+Configura la conexión a PostgreSQL en `.env`:
 
-# Testing
-php artisan test
-php artisan test --coverage
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=ind_maav_db
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contrasena
+```
 
-# Logs
-tail -f storage/logs/laravel.log
+```bash
+php artisan migrate
+php artisan serve
 ```
 
 ### Frontend
 
 ```bash
-# Desarrollo
-npm run dev                       # Iniciar servidor
-npm run build                     # Compilar para producción
-npm run preview                   # Previsualizar build
-npm run lint                      # Verificar código
-
-# Testing
-npm run test
-npm run test:coverage
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
 ```
 
 ---
 
-## 📊 Estructura del Proyecto
+## 📚 Documentación
 
-```
-ind-maav/
-├── backend/                      # API REST (Laravel)
-│   ├── app/
-│   │   ├── Http/Controllers/
-│   │   ├── Models/
-│   │   └── Services/
-│   ├── database/
-│   │   ├── migrations/
-│   │   └── seeders/
-│   ├── routes/
-│   └── storage/
-├── frontend/                     # SPA (React)
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   └── stores/
-│   ├── public/
-│   └── dist/
-├── docs/                         # Documentación
-│   ├── API.md
-│   ├── DATABASE.md
-│   ├── MERCADOPAGO.md
-│   ├── SETUP.md
-│   ├── FLUJOS.md
-│   ├── LEGAL.md
-│   └── DEPLOYMENT.md
-├── docker/                       # Configuración Docker
-├── .gitignore
-└── README.md
-```
+La documentación está en `/docs/`.
+
+- `docs/API.md` — Endpoints REST.
+- `docs/DATABASE.md` — Esquema y ER.
+- `docs/MERCADOPAGO.md` — Integración de pagos.
+- `docs/SETUP.md` — Guía de instalación.
+- `docs/FLUJOS.md` — Flujos operativos.
+- `docs/LEGAL.md` — Normativa y cumplimiento.
+- `docs/DEPLOYMENT.md` — Despliegue en producción.
 
 ---
 
-## 🔐 Seguridad
+## 🎯 Roadmap
 
-Esta plataforma implementa múltiples capas de seguridad:
+### Fase 1: Fundaciones
+- [x] Configuración de entorno local.
+- [x] Modelado de datos y migraciones.
+- [x] Core de autenticación.
+- [ ] Endpoints CRUD base.
+- [ ] Pruebas iniciales.
 
-- ✅ **Autenticación JWT** - Tokens seguros con expiración
-- ✅ **Encriptación HTTPS/SSL** - Todo el tráfico cifrado
-- ✅ **Protección CORS** - Solo orígenes permitidos
-- ✅ **Rate Limiting** - Prevención de ataques
-- ✅ **Validación de Entrada** - Sanitización de datos
-- ✅ **CSRF Protection** - Tokens anti-CSRF
-- ✅ **SQL Injection Prevention** - ORM y prepared statements
-- ✅ **Logging y Auditoría** - Registro de cambios críticos
-- ✅ **Secrets Management** - Variables de entorno
-- ✅ **Password Hashing** - Algoritmo bcrypt
+### Fase 2: Consolidación Backend
+- [ ] Control de acceso por roles (RBAC).
+- [ ] Auditoría y logs estructurados.
+- [ ] Optimización de queries.
+- [ ] Cobertura de pruebas.
 
----
-
-## 📞 Contacto y Soporte
-
-**IND-MAAV S.A.S.**
-- 🌐 Website: [www.indmaav.com](https://www.indmaav.com)
-- 📧 Email: contacto@indmaav.com
-- 📞 Teléfono: +57 (1) 1234-5678
-- 💬 WhatsApp: +57 320 1234567
-- 🏢 Oficina: Bogotá, D.C., Colombia
-
-### Horario de Atención
-**Lunes a Viernes:** 8:00 AM - 5:00 PM  
-**Sábados:** 9:00 AM - 1:00 PM  
-**Domingos:** Cerrado
+### Fase 3: Frontend & Integración
+- [ ] Axios + interceptores de token.
+- [ ] Estado global en React.
+- [ ] Checkout completo.
+- [ ] UI/UX responsive.
 
 ---
 
 ## 🤝 Contribución
 
-Las contribuciones son bienvenidas. Por favor:
+1. Abre un issue describiendo tu propuesta.
+2. Haz fork del repositorio.
+3. Envía un pull request con cambios documentados.
 
-1. Fork el proyecto
-2. Crea una rama (`git checkout -b feature/AmazingFeature`)
-3. Commit cambios (`git commit -m 'Add AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+---
+
+## 👨‍💻 Sobre el desarrollador
+
+Desarrollador en formación con enfoque en backend y diseño de APIs REST. Tengo experiencia práctica con Laravel, Spring Boot y entornos reales de desarrollo. Este proyecto refleja mi interés por construir sistemas escalables, bien estructurados y orientados a resolver problemas reales de negocio.
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la licencia **MIT**. Ver archivo [LICENSE](LICENSE) para más detalles.
-
----
-
-## ⚖️ Aviso Legal
-
-Esta plataforma cumple con la normativa colombiana aplicable:
-
-- ✅ Ley 1480/2011 - Estatuto del Consumidor
-- ✅ Ley 1581/2012 - Protección de Datos Personales
-- ✅ Decreto 1377/2013 - Reglamentación LPDP
-- ✅ Ley 1831/2017 - Comercio Electrónico
-
-Ver [LEGAL.md](docs/LEGAL.md) para términos y condiciones completos.
-
----
-
-## 📈 Estadísticas del Proyecto
-
-![GitHub Stars](https://img.shields.io/github/stars/tuempresa/ind-maav?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/tuempresa/ind-maav?style=social)
-![GitHub Issues](https://img.shields.io/github/issues/tuempresa/ind-maav)
-![GitHub Pull Requests](https://img.shields.io/github/pulls/tuempresa/ind-maav)
-
----
-
-**Última actualización:** 25 de enero de 2024  
-**Versión:** 1.0.0  
-**Estado:** ✅ Producción
+MIT.
