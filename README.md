@@ -5,7 +5,7 @@
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018-blue.svg)](https://react.dev)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL-darkblue.svg)](https://www.postgresql.org)
 
-**IND_MAAV** es una plataforma Full-Stack para la gestión de ventas, inventario y operaciones de negocios de muebles industriales. Con fuerte enfoque en backend, integridad de datos y diseño de APIs, está diseñada para resolver un problema real: centralizar el catálogo, el cálculo de envíos y el flujo de órdenes con una API robusta y escalable.
+**IND_MAAV** es la plataforma oficial de comercio electrónico para la venta de muebles industriales. Con fuerte enfoque en backend, integridad de datos y diseño de APIs, está diseñada para gestionar el catálogo, el cálculo de envíos y el flujo de órdenes de una tienda online con una experiencia sólida y escalable.
 
 ---
 
@@ -47,19 +47,18 @@
 
 ## 🧩 Problema que resuelve
 
-IND_MAAV ayuda a empresas de muebles industriales a digitalizar su ciclo de ventas y operaciones internas, con foco en:
+IND_MAAV es una tienda online de muebles industriales que busca digitalizar su catálogo, gestión de inventario y proceso de compra. El objetivo es ofrecer una experiencia de venta clara, eficiente y con control de envíos y pagos.
 
 - Catálogo de productos y categorías con inventario controlado.
 - Gestión de órdenes y seguimiento de envíos.
 - Cálculo de tarifas de envío con zonas y reglas.
 - Integración de pagos seguros para el checkout.
-- Panel administrativo para control operativo.
+- Administración del catálogo y pedidos desde el backend.
 
 ### Usuario objetivo
 
-- Administradores operativos de tiendas B2B/B2C.
-- Equipos de logística que necesitan control de envíos.
-- Clientes corporativos que compran muebles industriales en línea.
+- Clientes que buscan muebles industriales en línea.
+- Operaciones internas de IND_MAAV para gestionar pedidos y envíos.
 
 ---
 
