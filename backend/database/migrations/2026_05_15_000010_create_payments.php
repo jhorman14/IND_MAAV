@@ -13,27 +13,26 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('orden_id');
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->string('email_cliente');
-            $table->decimal('monto', 12, 2);
-            $table->string('moneda')->default('COP');
-            $table->enum('estado', ['pendiente', 'aprobado', 'rechazado', 'cancelado', 'reembolsado'])->default('pendiente');
-            $table->string('metodo_pago')->nullable();
-            $table->string('referencia_externo')->nullable();
-            $table->string('referencia_mercadopago')->nullable();
-            $table->string('tipo_pago')->nullable();
-            $table->string('ultimos_4_digitos')->nullable();
-            $table->string('banco')->nullable();
-            $table->timestamp('fecha_pago')->nullable();
-            $table->timestamp('fecha_conciliacion')->nullable();
-            $table->text('nota_error')->nullable();
+            $table->uuid('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->string('customer_email');
+            $table->decimal('amount', 12, 2);
+            $table->string('currency')->default('COP');
+            $table->enum('status', ['pending', 'approved', 'rejected', 'cancelled', 'refunded'])->default('pending');
+            $table->string('payment_method')->nullable();
+            $table->string('external_reference')->nullable();
+            $table->string('mercadopago_reference')->nullable();
+            $table->string('last_four')->nullable();
+            $table->string('bank')->nullable();
+            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('reconciled_at')->nullable();
+            $table->text('error_note')->nullable();
             $table->timestamps();
 
-            $table->index('orden_id');
-            $table->index('estado');
-            $table->index('email_cliente');
-            $table->index('referencia_mercadopago');
+            $table->index('order_id');
+            $table->index('status');
+            $table->index('customer_email');
+            $table->index('mercadopago_reference');
             $table->index('created_at');
         });
     }

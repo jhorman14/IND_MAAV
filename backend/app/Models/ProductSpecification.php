@@ -12,9 +12,9 @@ class ProductSpecification extends Model
     protected $table = 'product_specifications';
 
     protected $fillable = [
-        'producto_id',
-        'nombre',
-        'valor',
+        'product_id',
+        'name',
+        'value',
     ];
 
     protected $casts = [
@@ -24,6 +24,6 @@ class ProductSpecification extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'producto_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

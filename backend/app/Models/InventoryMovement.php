@@ -12,32 +12,32 @@ class InventoryMovement extends Model
     protected $table = 'inventory_movements';
 
     protected $fillable = [
-        'producto_id',
-        'cantidad_anterior',
-        'cantidad_nueva',
-        'cantidad_movida',
-        'motivo',
-        'referencia_id',
-        'referencia_tipo',
-        'usuario_id',
-        'notas',
+        'product_id',
+        'previous_quantity',
+        'new_quantity',
+        'moved_quantity',
+        'reason',
+        'reference_id',
+        'reference_type',
+        'user_id',
+        'notes',
     ];
 
     protected $casts = [
-        'cantidad_anterior' => 'integer',
-        'cantidad_nueva' => 'integer',
-        'cantidad_movida' => 'integer',
+        'previous_quantity' => 'integer',
+        'new_quantity' => 'integer',
+        'moved_quantity' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'producto_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

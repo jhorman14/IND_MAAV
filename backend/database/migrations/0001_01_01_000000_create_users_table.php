@@ -13,25 +13,25 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('nombre');
+            $table->string('name');
             $table->string('email')->unique();
-            $table->string('password_hash');
-            $table->string('telefono')->nullable();
-            $table->string('movil')->nullable();
-            $table->string('ubicacion_fisica')->nullable();
-            $table->enum('rol', ['customer', 'admin', 'vendor'])->default('customer');
-            $table->enum('estado', ['activo', 'inactivo', 'bloqueado'])->default('activo');
-            $table->boolean('email_verificado')->default(false);
-            $table->timestamp('email_verificado_en')->nullable();
-            $table->timestamp('ultimo_login')->nullable();
-            $table->string('token_reset_password')->nullable();
-            $table->timestamp('token_reset_expira')->nullable();
+            $table->string('password');
+            $table->string('phone')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('physical_address')->nullable();
+            $table->enum('role', ['customer', 'admin', 'vendor'])->default('customer');
+            $table->enum('status', ['active', 'inactive', 'blocked'])->default('active');
+            $table->boolean('email_verified')->default(false);
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('last_login_at')->nullable();
+            $table->string('password_reset_token')->nullable();
+            $table->timestamp('password_reset_expires_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->index('email');
-            $table->index('rol');
-            $table->index('estado');
+            $table->index('role');
+            $table->index('status');
             $table->index('created_at');
         });
 

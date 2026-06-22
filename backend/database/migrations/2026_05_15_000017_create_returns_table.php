@@ -13,27 +13,27 @@ return new class extends Migration
     {
         Schema::create('returns', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('orden_id');
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('restrict');
-            
-            $table->string('motivo');
-            $table->text('descripcion')->nullable();
-            $table->enum('estado', ['solicitada', 'aprobada', 'rechazada', 'recibida', 'procesada'])->default('solicitada');
-            
-            $table->timestamp('fecha_solicitud')->useCurrent();
-            $table->timestamp('fecha_recepcion')->nullable();
-            $table->timestamp('fecha_procesamiento')->nullable();
-            
-            $table->decimal('monto_reembolso', 12, 2)->nullable();
-            $table->text('notas_admin')->nullable();
-            
+            $table->uuid('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+
+            $table->string('reason');
+            $table->text('description')->nullable();
+            $table->enum('status', ['requested', 'approved', 'rejected', 'received', 'processed'])->default('requested');
+
+            $table->timestamp('requested_at')->useCurrent();
+            $table->timestamp('received_at')->nullable();
+            $table->timestamp('processed_at')->nullable();
+
+            $table->decimal('refund_amount', 12, 2)->nullable();
+            $table->text('admin_notes')->nullable();
+
             $table->timestamps();
 
-            $table->index('orden_id');
-            $table->index('usuario_id');
-            $table->index('estado');
+            $table->index('order_id');
+            $table->index('user_id');
+            $table->index('status');
             $table->index('created_at');
         });
     }

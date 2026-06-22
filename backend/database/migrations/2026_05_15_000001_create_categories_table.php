@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
+            $table->string('name')->unique();
             $table->string('slug')->unique();
-            $table->text('descripcion')->nullable();
-            $table->string('icono')->nullable();
-            $table->string('imagen')->nullable();
-            $table->unsignedBigInteger('categoria_padre_id')->nullable();
-            $table->foreign('categoria_padre_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->integer('orden')->default(0);
-            $table->enum('estado', ['activa', 'inactiva'])->default('activa');
+            $table->text('description')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('image')->nullable();
+            $table->unsignedBigInteger('parent_category_id')->nullable();
+            $table->foreign('parent_category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->integer('order')->default(0);
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
 
             $table->index('slug');
-            $table->index('categoria_padre_id');
-            $table->index('orden');
+            $table->index('parent_category_id');
+            $table->index('order');
         });
     }
 

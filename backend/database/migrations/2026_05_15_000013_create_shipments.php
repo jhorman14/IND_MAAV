@@ -13,21 +13,23 @@ return new class extends Migration
     {
         Schema::create('shipments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('orden_id');
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->string('numero_seguimiento')->unique();
-            $table->string('transportista')->nullable();
-            $table->enum('estado', ['pendiente', 'en_transito', 'entregado', 'devuelto', 'retrasado'])->default('pendiente');
-            $table->timestamp('fecha_envio')->nullable();
-            $table->timestamp('fecha_entrega_estimada')->nullable();
-            $table->timestamp('fecha_entrega_real')->nullable();
-            $table->timestamp('ultima_actualizacion')->useCurrent();
-            $table->text('notas')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->uuid('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->string('tracking_number')->unique();
+            $table->string('courier')->nullable();
+            $table->enum('shipping_status', ['pending', 'in_transit', 'delivered', 'returned', 'delayed'])->default('pending');
+            $table->string('delivery_address', 500)->nullable();
+            $table->string('delivery_city')->nullable();
+            $table->string('delivery_state')->nullable();
+            $table->timestamp('shipped_at')->nullable();
+            $table->timestamp('estimated_delivery_at')->nullable();
+            $table->timestamp('delivered_at')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamps();
 
-            $table->index('orden_id');
-            $table->index('numero_seguimiento');
-            $table->index('estado');
+            $table->index('order_id');
+            $table->index('tracking_number');
+            $table->index('shipping_status');
         });
     }
 

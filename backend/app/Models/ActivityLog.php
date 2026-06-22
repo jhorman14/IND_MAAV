@@ -12,12 +12,12 @@ class ActivityLog extends Model
     protected $table = 'activity_logs';
 
     protected $fillable = [
-        'usuario_id',
-        'tipo_actividad',
-        'descripcion',
-        'entidad_tipo',
-        'entidad_id',
-        'ip_cliente',
+        'user_id',
+        'activity_type',
+        'description',
+        'entity_type',
+        'entity_id',
+        'client_ip',
     ];
 
     protected $casts = [
@@ -27,6 +27,6 @@ class ActivityLog extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -13,17 +13,18 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->uuid('usuario_id')->nullable();
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
-            $table->string('tipo_actividad')->nullable();
-            $table->text('descripcion')->nullable();
-            $table->string('referencia_id')->nullable();
-            $table->ipAddress('ip_address')->nullable();
+            $table->uuid('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->string('activity_type')->nullable();
+            $table->text('description')->nullable();
+            $table->string('entity_type')->nullable();
+            $table->string('entity_id')->nullable();
+            $table->ipAddress('client_ip')->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
 
-            $table->index('usuario_id');
-            $table->index('tipo_actividad');
+            $table->index('user_id');
+            $table->index('activity_type');
             $table->index('created_at');
         });
     }

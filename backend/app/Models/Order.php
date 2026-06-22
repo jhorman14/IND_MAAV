@@ -13,27 +13,27 @@ class Order extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'numero_orden',
-        'usuario_id',
-        'estado',
+        'order_number',
+        'user_id',
+        'status',
         'subtotal',
-        'impuesto_iva',
-        'descuento',
-        'costo_envio',
+        'tax',
+        'discount',
+        'shipping_cost',
         'total',
-        'nombre_cliente',
-        'email_cliente',
-        'direccion_facturacion',
-        'ciudad_facturacion',
-        'departamento_facturacion',
-        'tipo_envio',
+        'customer_name',
+        'customer_email',
+        'billing_address',
+        'billing_city',
+        'billing_state',
+        'shipping_type',
     ];
 
     protected $casts = [
         'subtotal' => 'decimal:2',
-        'impuesto_iva' => 'decimal:2',
-        'descuento' => 'decimal:2',
-        'costo_envio' => 'decimal:2',
+        'tax' => 'decimal:2',
+        'discount' => 'decimal:2',
+        'shipping_cost' => 'decimal:2',
         'total' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -41,41 +41,41 @@ class Order extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function orderItems()
     {
-        return $this->hasMany(OrderItem::class, 'orden_id');
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 
     public function payment()
     {
-        return $this->hasOne(Payment::class, 'orden_id');
+        return $this->hasOne(Payment::class, 'order_id');
     }
 
     public function shipment()
     {
-        return $this->hasOne(Shipment::class, 'orden_id');
+        return $this->hasOne(Shipment::class, 'order_id');
     }
 
     public function returns()
     {
-        return $this->hasMany(ProductReturn::class, 'orden_id');
+        return $this->hasMany(ProductReturn::class, 'order_id');
     }
 
     public function reviews()
     {
-        return $this->hasMany(Review::class, 'orden_id');
+        return $this->hasMany(Review::class, 'order_id');
     }
 
     public function orderStateHistories()
     {
-        return $this->hasMany(OrderStateHistory::class, 'orden_id');
+        return $this->hasMany(OrderStateHistory::class, 'order_id');
     }
 
     public function promotionItems()
     {
-        return $this->hasMany(PromotionItem::class, 'orden_id');
+        return $this->hasMany(PromotionItem::class, 'order_id');
     }
 }

@@ -12,16 +12,16 @@ class OrderItem extends Model
     protected $table = 'order_items';
 
     protected $fillable = [
-        'orden_id',
-        'producto_id',
-        'cantidad',
-        'precio_unitario',
+        'order_id',
+        'product_id',
+        'quantity',
+        'unit_price',
         'subtotal',
     ];
 
     protected $casts = [
-        'cantidad' => 'integer',
-        'precio_unitario' => 'decimal:2',
+        'quantity' => 'integer',
+        'unit_price' => 'decimal:2',
         'subtotal' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -29,11 +29,11 @@ class OrderItem extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'producto_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

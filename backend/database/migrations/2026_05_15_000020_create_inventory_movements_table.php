@@ -13,26 +13,26 @@ return new class extends Migration
     {
         Schema::create('inventory_movements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('products')->onDelete('restrict');
-            
-            $table->integer('cantidad_anterior');
-            $table->integer('cantidad_nueva');
-            $table->integer('cantidad_movida');
-            
-            $table->enum('motivo', ['compra', 'devolucion', 'ajuste_manual', 'perdida', 'entrada_inventario'])->default('ajuste_manual');
-            $table->string('referencia_id')->nullable();
-            $table->string('referencia_tipo')->nullable();
-            
-            $table->uuid('usuario_id')->nullable();
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
-            
-            $table->text('notas')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
 
-            $table->index('producto_id');
-            $table->index('motivo');
-            $table->index('referencia_id');
+            $table->integer('previous_quantity');
+            $table->integer('new_quantity');
+            $table->integer('moved_quantity');
+
+            $table->enum('reason', ['purchase', 'return', 'manual_adjustment', 'loss', 'stock_entry'])->default('manual_adjustment');
+            $table->string('reference_id')->nullable();
+            $table->string('reference_type')->nullable();
+
+            $table->uuid('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+
+            $table->text('notes')->nullable();
+            $table->timestamps();
+
+            $table->index('product_id');
+            $table->index('reason');
+            $table->index('reference_id');
             $table->index('created_at');
         });
     }

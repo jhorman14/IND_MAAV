@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('url', 500);
-            $table->boolean('es_principal')->default(false);
-            $table->integer('orden')->default(0);
+            $table->boolean('is_primary')->default(false);
+            $table->integer('position')->default(0);
             $table->string('alt_text', 255)->nullable();
             $table->timestamps();
 
-            $table->index('producto_id');
-            $table->index('es_principal');
+            $table->index('product_id');
+            $table->index('is_primary');
         });
     }
 

@@ -12,24 +12,24 @@ class PromotionItem extends Model
     protected $table = 'promotion_items';
 
     protected $fillable = [
-        'promocion_id',
-        'orden_id',
-        'monto_descuento',
+        'promotion_id',
+        'order_id',
+        'discount_amount',
     ];
 
     protected $casts = [
-        'monto_descuento' => 'decimal:2',
+        'discount_amount' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function promotion()
     {
-        return $this->belongsTo(Promotion::class, 'promocion_id');
+        return $this->belongsTo(Promotion::class, 'promotion_id');
     }
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

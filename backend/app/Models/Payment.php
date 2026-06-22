@@ -13,24 +13,24 @@ class Payment extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'orden_id',
-        'email_cliente',
-        'monto',
-        'moneda',
-        'estado',
-        'referencia_mercadopago',
-        'referencia_externo',
-        'metodo_pago',
+        'order_id',
+        'customer_email',
+        'amount',
+        'currency',
+        'status',
+        'mercadopago_reference',
+        'external_reference',
+        'payment_method',
     ];
 
     protected $casts = [
-        'monto' => 'decimal:2',
+        'amount' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

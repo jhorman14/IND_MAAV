@@ -13,25 +13,23 @@ return new class extends Migration
     {
         Schema::create('promotions', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo')->unique();
-            $table->string('descripcion')->nullable();
-            $table->enum('tipo', ['porcentaje', 'monto_fijo', 'envio_gratis'])->default('porcentaje');
-            $table->decimal('valor', 12, 2);
-            $table->integer('cantidad_maxima_usos')->nullable();
-            $table->integer('cantidad_usos')->default(0);
-            $table->integer('usos_por_usuario')->default(1);
-            $table->decimal('monto_minimo_compra', 12, 2)->default(0);
-            $table->unsignedBigInteger('categoria_id')->nullable();
-            $table->foreign('categoria_id')->references('id')->on('categories')->onDelete('set null');
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
-            $table->enum('estado', ['activa', 'inactiva', 'expirada'])->default('activa');
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->enum('discount_type', ['percentage', 'fixed_amount', 'free_shipping'])->default('percentage');
+            $table->decimal('discount_value', 12, 2);
+            $table->integer('max_uses')->nullable();
+            $table->integer('uses_count')->default(0);
+            $table->decimal('minimum_purchase', 12, 2)->default(0);
+            $table->date('starts_at');
+            $table->date('ends_at');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->index('codigo');
-            $table->index('estado');
-            $table->index('fecha_inicio');
-            $table->index('fecha_fin');
+            $table->index('code');
+            $table->index('is_active');
+            $table->index('starts_at');
+            $table->index('ends_at');
         });
     }
 

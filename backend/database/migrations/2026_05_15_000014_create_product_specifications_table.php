@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('product_specifications', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('products')->onDelete('cascade');
-            $table->string('nombre_especificacion');
-            $table->string('valor_especificacion', 500);
-            $table->integer('orden')->default(0);
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->string('specification_name');
+            $table->string('specification_value', 500);
+            $table->integer('position')->default(0);
 
-            $table->index('producto_id');
+            $table->index('product_id');
         });
     }
 

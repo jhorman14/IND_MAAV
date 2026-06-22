@@ -13,46 +13,30 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('numero_orden')->unique();
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('restrict');
-            
-            // Información del cliente (para notificaciones y auditoría)
-            $table->string('nombre_cliente');
-            $table->string('email_cliente');
-            
-            $table->enum('estado', ['pendiente_pago', 'pagado', 'preparando', 'enviado', 'entregado', 'cancelado', 'reembolsado'])->default('pendiente_pago');
+            $table->string('order_number')->unique();
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+
+            $table->string('customer_name');
+            $table->string('customer_email');
+            $table->enum('status', ['pending_payment', 'paid', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'])->default('pending_payment');
             $table->decimal('subtotal', 12, 2);
-            $table->decimal('impuesto_iva', 12, 2);
-            $table->decimal('descuento', 12, 2)->default(0);
-            $table->decimal('costo_envio', 12, 2);
+            $table->decimal('tax', 12, 2);
+            $table->decimal('discount', 12, 2)->default(0);
+            $table->decimal('shipping_cost', 12, 2);
             $table->decimal('total', 12, 2);
-            
-            // Dirección de envío
-            $table->string('direccion_envio', 500);
-            $table->string('ciudad_envio');
-            $table->string('departamento_envio');
-            $table->string('codigo_postal_envio')->nullable();
-            
-            // Dirección de facturación
-            $table->string('direccion_facturacion', 500)->nullable();
-            $table->string('ciudad_facturacion')->nullable();
-            $table->string('departamento_facturacion')->nullable();
-            
-            $table->string('telefono_contacto')->nullable();
-            $table->enum('tipo_envio', ['express', 'estandar'])->default('estandar');
-            $table->string('metodo_pago')->nullable();
-            $table->text('notas')->nullable();
-            $table->timestamp('fecha_envio')->nullable();
-            $table->timestamp('fecha_entrega')->nullable();
+
+            $table->string('billing_address', 500)->nullable();
+            $table->string('billing_city')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('shipping_type')->nullable();
             $table->timestamps();
 
-            $table->index('numero_orden');
-            $table->index('usuario_id');
-            $table->index('estado');
-            $table->index('email_cliente');
+            $table->index('order_number');
+            $table->index('user_id');
+            $table->index('status');
+            $table->index('customer_email');
             $table->index('created_at');
-            $table->index('fecha_envio');
         });
     }
 

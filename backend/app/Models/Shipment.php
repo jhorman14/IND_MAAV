@@ -13,28 +13,28 @@ class Shipment extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'orden_id',
-        'numero_rastreo',
-        'transportista',
-        'estado_envio',
-        'direccion_entrega',
-        'ciudad_entrega',
-        'departamento_entrega',
-        'fecha_envio',
-        'fecha_entrega_estimada',
-        'fecha_entrega_real',
+        'order_id',
+        'tracking_number',
+        'courier',
+        'shipping_status',
+        'delivery_address',
+        'delivery_city',
+        'delivery_state',
+        'shipped_at',
+        'estimated_delivery_at',
+        'delivered_at',
     ];
 
     protected $casts = [
-        'fecha_envio' => 'datetime',
-        'fecha_entrega_estimada' => 'datetime',
-        'fecha_entrega_real' => 'datetime',
+        'shipped_at' => 'datetime',
+        'estimated_delivery_at' => 'datetime',
+        'delivered_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

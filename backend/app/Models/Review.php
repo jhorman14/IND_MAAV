@@ -10,34 +10,34 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable = [
-        'producto_id',
-        'usuario_id',
-        'orden_id',
-        'calificacion',
-        'titulo',
-        'comentario',
-        'compra_verificada',
+        'product_id',
+        'user_id',
+        'order_id',
+        'rating',
+        'title',
+        'comment',
+        'verified_purchase',
     ];
 
     protected $casts = [
-        'calificacion' => 'integer',
-        'compra_verificada' => 'boolean',
+        'rating' => 'integer',
+        'verified_purchase' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'producto_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 }

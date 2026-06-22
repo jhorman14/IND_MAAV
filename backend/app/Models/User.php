@@ -3,34 +3,35 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model
+class User extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasApiTokens, HasFactory, SoftDeletes;
 
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
-        'nombre',
+        'name',
         'email',
-        'password_hash',
-        'rol',
-        'estado',
-        'telefono',
-        'movil',
-        'ubicacion_fisica',
-        'email_verificado',
+        'password',
+        'role',
+        'status',
+        'phone',
+        'mobile',
+        'physical_address',
+        'email_verified',
     ];
 
     protected $hidden = [
-        'password_hash',
+        'password',
     ];
 
     protected $casts = [
-        'email_verificado' => 'boolean',
+        'email_verified' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -84,11 +85,11 @@ class User extends Model
 
     public function auditLogs()
     {
-        return $this->hasMany(AuditLog::class, 'usuario_id');
+        return $this->hasMany(AuditLog::class, 'user_id');
     }
 
     public function activityLogs()
     {
-        return $this->hasMany(ActivityLog::class, 'usuario_id');
+        return $this->hasMany(ActivityLog::class, 'user_id');
     }
 }

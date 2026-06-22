@@ -12,9 +12,9 @@ class ShippingZone extends Model
     protected $table = 'shipping_zones';
 
     protected $fillable = [
-        'nombre',
-        'descripcion',
-        'cobertura_geografica',
+        'name',
+        'description',
+        'geographic_coverage',
     ];
 
     protected $casts = [
@@ -24,6 +24,6 @@ class ShippingZone extends Model
 
     public function shippingRates()
     {
-        return $this->hasMany(ShippingRate::class, 'zona_id');
+        return $this->hasMany(ShippingRate::class, 'zone_id');
     }
 }

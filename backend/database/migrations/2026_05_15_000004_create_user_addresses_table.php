@@ -13,21 +13,21 @@ return new class extends Migration
     {
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->enum('tipo', ['envio', 'facturacion', 'otro'])->default('envio');
-            $table->string('nombre_direccion')->nullable();
-            $table->string('direccion');
-            $table->string('ciudad');
-            $table->string('departamento');
-            $table->string('codigo_postal')->nullable();
-            $table->string('pais')->default('Colombia');
-            $table->boolean('es_default')->default(false);
-            $table->text('notas')->nullable();
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->enum('type', ['shipping', 'billing', 'other'])->default('shipping');
+            $table->string('address_name')->nullable();
+            $table->string('address');
+            $table->string('city');
+            $table->string('state');
+            $table->string('postal_code')->nullable();
+            $table->string('country')->default('Colombia');
+            $table->boolean('is_default')->default(false);
+            $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->index('usuario_id');
-            $table->index('tipo');
+            $table->index('user_id');
+            $table->index('type');
         });
     }
 

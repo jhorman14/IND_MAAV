@@ -13,17 +13,16 @@ return new class extends Migration
     {
         Schema::create('shipping_rates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('zona_id');
-            $table->foreign('zona_id')->references('id')->on('shipping_zones')->onDelete('cascade');
-            $table->enum('tipo_envio', ['express', 'estandar'])->default('estandar');
-            $table->decimal('costo_base', 12, 2);
-            $table->decimal('costo_por_kg', 12, 2)->default(0);
-            $table->integer('dias_entrega')->nullable();
-            $table->decimal('peso_maximo_kg', 8, 3)->default(100);
-            $table->enum('estado', ['activa', 'inactiva'])->default('activa');
+            $table->unsignedBigInteger('zone_id');
+            $table->foreign('zone_id')->references('id')->on('shipping_zones')->onDelete('cascade');
+            $table->decimal('cost', 12, 2);
+            $table->decimal('minimum_weight', 8, 3)->default(0);
+            $table->decimal('maximum_weight', 8, 3)->default(100);
+            $table->integer('delivery_time_days')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->index('zona_id');
+            $table->index('zone_id');
         });
     }
 

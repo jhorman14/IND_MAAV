@@ -13,8 +13,8 @@ class Wishlist extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'usuario_id',
-        'producto_id',
+        'user_id',
+        'product_id',
     ];
 
     protected $casts = [
@@ -24,11 +24,11 @@ class Wishlist extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'producto_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

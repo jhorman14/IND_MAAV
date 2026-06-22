@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::create('user_coupons', function (Blueprint $table) {
             $table->id();
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('promocion_id');
-            $table->foreign('promocion_id')->references('id')->on('promotions')->onDelete('cascade');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('promotion_id');
+            $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
             
-            $table->boolean('usado')->default(false);
-            $table->timestamp('fecha_uso')->nullable();
+            $table->boolean('used')->default(false);
+            $table->timestamp('used_at')->nullable();
             
-            $table->uuid('orden_id')->nullable();
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('set null');
+            $table->uuid('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
             
             $table->timestamp('created_at')->useCurrent();
 
-            $table->unique(['usuario_id', 'promocion_id']);
-            $table->index('usuario_id');
-            $table->index('promocion_id');
-            $table->index('usado');
+            $table->unique(['user_id', 'promotion_id']);
+            $table->index('user_id');
+            $table->index('promotion_id');
+            $table->index('used');
         });
     }
 

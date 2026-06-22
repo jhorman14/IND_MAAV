@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('shipping_zones', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre')->unique();
-            $table->text('descripcion')->nullable();
-            $table->string('departamento');
-            $table->text('ciudades')->nullable();
-            $table->enum('estado', ['activa', 'inactiva'])->default('activa');
+            $table->string('name')->unique();
+            $table->text('description')->nullable();
+            $table->text('geographic_coverage')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->index('departamento');
+            $table->index('name');
         });
     }
 

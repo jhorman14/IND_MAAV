@@ -12,11 +12,11 @@ class OrderStateHistory extends Model
     protected $table = 'order_state_history';
 
     protected $fillable = [
-        'orden_id',
-        'estado_anterior',
-        'estado_nuevo',
-        'usuario_id',
-        'comentario',
+        'order_id',
+        'previous_status',
+        'new_status',
+        'user_id',
+        'comment',
     ];
 
     protected $casts = [
@@ -26,11 +26,11 @@ class OrderStateHistory extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

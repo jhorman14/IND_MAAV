@@ -13,25 +13,25 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('products')->onDelete('cascade');
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            
-            $table->integer('calificacion')->unsigned();
-            $table->string('titulo')->nullable();
-            $table->text('comentario')->nullable();
-            
-            $table->boolean('compra_verificada')->default(false);
-            $table->uuid('orden_id')->nullable();
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('set null');
-            
-            $table->timestamp('created_at')->useCurrent();
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->index('producto_id');
-            $table->index('usuario_id');
-            $table->index('compra_verificada');
-            $table->unique(['producto_id', 'usuario_id']);
+            $table->integer('rating')->unsigned();
+            $table->string('title')->nullable();
+            $table->text('comment')->nullable();
+
+            $table->boolean('verified_purchase')->default(false);
+            $table->uuid('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            
+            $table->timestamps();
+
+            $table->index('product_id');
+            $table->index('user_id');
+            $table->index('verified_purchase');
+            $table->unique(['product_id', 'user_id']);
         });
     }
 

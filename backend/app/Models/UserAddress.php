@@ -10,25 +10,25 @@ class UserAddress extends Model
     use HasFactory;
 
     protected $fillable = [
-        'usuario_id',
-        'tipo',
-        'nombre_completo',
-        'direccion',
-        'ciudad',
-        'departamento',
-        'codigo_postal',
-        'telefonoContacto',
-        'es_predeterminada',
+        'user_id',
+        'type',
+        'full_name',
+        'address',
+        'city',
+        'state',
+        'postal_code',
+        'phone',
+        'is_default',
     ];
 
     protected $casts = [
-        'es_predeterminada' => 'boolean',
+        'is_default' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

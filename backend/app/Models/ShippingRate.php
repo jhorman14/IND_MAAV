@@ -12,24 +12,24 @@ class ShippingRate extends Model
     protected $table = 'shipping_rates';
 
     protected $fillable = [
-        'zona_id',
-        'peso_minimo',
-        'peso_maximo',
-        'costo',
-        'tiempo_entrega_dias',
+        'zone_id',
+        'minimum_weight',
+        'maximum_weight',
+        'cost',
+        'delivery_time_days',
     ];
 
     protected $casts = [
-        'peso_minimo' => 'decimal:2',
-        'peso_maximo' => 'decimal:2',
-        'costo' => 'decimal:2',
-        'tiempo_entrega_dias' => 'integer',
+        'minimum_weight' => 'decimal:2',
+        'maximum_weight' => 'decimal:2',
+        'cost' => 'decimal:2',
+        'delivery_time_days' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function zone()
     {
-        return $this->belongsTo(ShippingZone::class, 'zona_id');
+        return $this->belongsTo(ShippingZone::class, 'zone_id');
     }
 }

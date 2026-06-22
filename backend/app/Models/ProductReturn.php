@@ -15,34 +15,34 @@ class ProductReturn extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'orden_id',
-        'usuario_id',
-        'motivo',
-        'descripcion',
-        'estado',
-        'fecha_solicitud',
-        'fecha_recepcion',
-        'fecha_procesamiento',
-        'monto_reembolso',
-        'notas_admin',
+        'order_id',
+        'user_id',
+        'reason',
+        'description',
+        'status',
+        'requested_at',
+        'received_at',
+        'processed_at',
+        'refund_amount',
+        'admin_notes',
     ];
 
     protected $casts = [
-        'fecha_solicitud' => 'datetime',
-        'fecha_recepcion' => 'datetime',
-        'fecha_procesamiento' => 'datetime',
-        'monto_reembolso' => 'decimal:2',
+        'requested_at' => 'datetime',
+        'received_at' => 'datetime',
+        'processed_at' => 'datetime',
+        'refund_amount' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orden_id');
+        return $this->belongsTo(Order::class, 'order_id');
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

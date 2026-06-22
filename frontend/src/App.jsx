@@ -1,122 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState, useEffect } from 'react'
+import './styles/App.css'
+import { ROUTES, STORAGE_KEYS } from './config/constants'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+import ProductsPage from './pages/ProductsPage'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentView, setCurrentView] = useState('home') // home, login, register, products
+  const [user, setUser] = useState(null)
+  const [token, setToken] = useState(null)
+
+  // Cargar token de localStorage al iniciar
+  useEffect(() => {
+    const savedToken = localStorage.getItem('auth_token')
+    const savedUser = localStorage.getItem('user')
+    if (savedToken && savedUser) {
+      setToken(savedToken)
+      setUser(JSON.parse(savedUser))
+      setCurrentView('products')
+    }
+  }, [])
+
+  const handleLoginSuccess = (newToken, newUser) => {
+    setToken(newToken)
+    setUser(newUser)
+    setCurrentView('products')
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token')
+    localStorage.removeItem('user')
+    setToken(null)
+    setUser(null)
+    setCurrentView('home')
+  }
+  
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+      <nav style={{ padding: '10px 20px', backgroundColor: '#f0f0f0', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ fontSize: '18px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => setCurrentView('home')}>
+          IND-MAAV
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+        <div style={{ display: 'flex', gap: '15px' }}>
+          {user ? (
+            <>
+              <span>Hola, {user.nombre || user.name || 'Usuario'}</span>
+              <button onClick={() => setCurrentView('products')} style={{ cursor: 'pointer', padding: '5px 10px' }}>
+                Productos
+              </button>
+              <button onClick={handleLogout} style={{ cursor: 'pointer', padding: '5px 10px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px' }}>
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={() => setCurrentView('login')} style={{ cursor: 'pointer', padding: '5px 10px' }}>
+                Iniciar sesión
+              </button>
+              <button onClick={() => setCurrentView('register')} style={{ cursor: 'pointer', padding: '5px 10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '4px' }}>
+                Registrarse
+              </button>
+            </>
+          )}
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+      </nav>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {currentView === 'home' && <HomePage onNavigate={setCurrentView} />}
+      {currentView === 'login' && <LoginPage onLoginSuccess={handleLoginSuccess} />}
+      {currentView === 'register' && <RegisterPage onRegisterSuccess={handleLoginSuccess} />}
+      {currentView === 'products' && <ProductsPage token={token} />}
+      </>
+    )
 }
+
 
 export default App

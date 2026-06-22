@@ -10,38 +10,38 @@ class Promotion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'codigo',
-        'nombre',
-        'descripcion',
-        'tipo_descuento',
-        'valor_descuento',
-        'fecha_inicio',
-        'fecha_fin',
-        'cantidad_usos_maximos',
-        'cantidad_usos_actuales',
-        'uso_minimo_compra',
-        'es_activa',
+        'code',
+        'name',
+        'description',
+        'discount_type',
+        'discount_value',
+        'starts_at',
+        'ends_at',
+        'max_uses',
+        'uses_count',
+        'minimum_purchase',
+        'is_active',
     ];
 
     protected $casts = [
-        'valor_descuento' => 'decimal:2',
-        'fecha_inicio' => 'datetime',
-        'fecha_fin' => 'datetime',
-        'cantidad_usos_maximos' => 'integer',
-        'cantidad_usos_actuales' => 'integer',
-        'uso_minimo_compra' => 'decimal:2',
-        'es_activa' => 'boolean',
+        'discount_value' => 'decimal:2',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
+        'max_uses' => 'integer',
+        'uses_count' => 'integer',
+        'minimum_purchase' => 'decimal:2',
+        'is_active' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
     public function promotionItems()
     {
-        return $this->hasMany(PromotionItem::class, 'promocion_id');
+        return $this->hasMany(PromotionItem::class, 'promotion_id');
     }
 
     public function userCoupons()
     {
-        return $this->hasMany(UserCoupon::class, 'promocion_id');
+        return $this->hasMany(UserCoupon::class, 'promotion_id');
     }
 }

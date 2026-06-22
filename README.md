@@ -1,8 +1,8 @@
 # IND_MAAV — Enterprise-Grade Management System
 
 [![Project Status: WIP](https://img.shields.io/badge/Project%20Status-Work%20In%20Progress-orange.svg)](https://github.com/jhorman14/IND_MAAV)
-[![Backend](https://img.shields.io/badge/Backend-Laravel%2011-red.svg)](https://laravel.com)
-[![Frontend](https://img.shields.io/badge/Frontend-React%2018-blue.svg)](https://react.dev)
+[![Backend](https://img.shields.io/badge/Backend-Laravel%2013-red.svg)](https://laravel.com)
+[![Frontend](https://img.shields.io/badge/Frontend-React%2019-blue.svg)](https://react.dev)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL-darkblue.svg)](https://www.postgresql.org)
 
 **IND_MAAV** es la plataforma oficial de comercio electrónico para la venta de muebles industriales. Con fuerte enfoque en backend, integridad de datos y diseño de APIs, está diseñada para gestionar el catálogo, el cálculo de envíos y el flujo de órdenes de una tienda online con una experiencia sólida y escalable.
@@ -31,11 +31,18 @@
 
 ## 🚧 Estado Actual
 
-*Progreso estimado:* ~15% de la visión global.
+*Progreso estimado:* ~20% de la visión global.
 
-*Fase actual:* Diseño de arquitectura base, modelado relacional, migraciones iniciales e implementación de un núcleo de autenticación y API REST.
+*Fase actual:* Configuración de proyecto, modelado de dominio y migraciones de base de datos.
 
-> Este repositorio no es un producto terminado. Está en evolución y enfocado en consolidar una base técnica sólida antes de escalar funcionalidades.
+**Progreso por capa:**
+- Modelado de datos y migraciones: 40% de la capa backend.
+- Proyecto Laravel base y configuración: 20%.
+- Diseño de API y documentación técnica: 20%.
+- Frontend React/Vite inicial: 5%.
+- Endpoints funcionales, autenticación y UI real: 0%.
+
+> El código actual incluye el esqueleto Laravel + React y el esquema de dominio en migraciones, pero todavía no tiene rutas API definidas ni controladores funcionales para las operaciones de negocio.
 
 ---
 
@@ -64,7 +71,7 @@ IND_MAAV es una tienda online de muebles industriales que busca digitalizar su c
 
 ## 🏗️ Decisiones Técnicas
 
-**Stack principal:** Laravel 11 + React 18 + PostgreSQL.
+**Stack principal:** Laravel 13 + React 19 + PostgreSQL.
 
 ### Enfoque arquitectónico
 - API-first con controladores delgados.
@@ -85,11 +92,11 @@ IND_MAAV es una tienda online de muebles industriales que busca digitalizar su c
 
 | Capa | Tecnología | Comentario |
 |------|------------|------------|
-| **Backend** | PHP 8.2+ / Laravel 11 | API REST estructurada |
-| **Frontend** | React 18 | Vite + UI desacoplada |
-| **Base de datos** | PostgreSQL | Modelo transaccional |
-| **Autenticación** | JWT / Sanctum | Stateless tokenizado |
-| **Pagos** | MercadoPago API | Integración de pagos locales |
+| **Backend** | PHP 8.3 / Laravel 13 | Proyecto base configurado |
+| **Frontend** | React 19 | Plantilla Vite inicial |
+| **Base de datos** | PostgreSQL | Modelo relacional con migraciones |
+| **Autenticación** | Diseño para JWT | No implementada aún |
+| **Pagos** | MercadoPago | Diseño documental existente |
 | **Contenedores** | Docker | Opcional para desarrollo |
 
 ---
@@ -167,11 +174,11 @@ Response:
 
 ## 🧠 Lo que demuestra este proyecto
 
-- Diseño de APIs REST estructuradas y con contratos claros.
-- Modelado relacional en PostgreSQL con migraciones y relaciones Eloquent.
-- Separación de responsabilidades usando controladores, requests y resources.
-- Implementación de autenticación stateless y seguridad básica.
-- Mentalidad de arquitectura escalable y código mantenible.
+- Modelado relacional en PostgreSQL con un esquema de dominio extensivo.
+- Estructura de proyecto Laravel y React configurada.
+- Documentación de diseño de API, flujos y base de datos.
+- Migraciones iniciales para catálogo, órdenes, pagos, envíos, promociones y auditoría.
+- En desarrollo: endpoints funcionales, autenticación JWT y UI real.
 
 ---
 
@@ -195,9 +202,9 @@ backend/app/
 
 ## 📦 Requisitos
 
-- PHP 8.2+
+- PHP 8.3+
 - Composer 2+
-- Node.js 16+
+- Node.js 18+
 - npm 8+
 - PostgreSQL 13+
 - Git
@@ -236,7 +243,6 @@ php artisan serve
 ```bash
 cd frontend
 npm install
-cp .env.example .env
 npm run dev
 ```
 

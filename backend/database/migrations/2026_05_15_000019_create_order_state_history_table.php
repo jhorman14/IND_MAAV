@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('order_state_history', function (Blueprint $table) {
             $table->id();
-            $table->uuid('orden_id');
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('cascade');
-            
-            $table->string('estado_anterior')->nullable();
-            $table->string('estado_nuevo');
-            
-            $table->uuid('usuario_id')->nullable();
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('set null');
-            
-            $table->text('comentario')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->uuid('order_id');
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
 
-            $table->index('orden_id');
-            $table->index('usuario_id');
+            $table->string('previous_status')->nullable();
+            $table->string('new_status');
+
+            $table->uuid('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+
+            $table->text('comment')->nullable();
+            $table->timestamps();
+
+            $table->index('order_id');
+            $table->index('user_id');
             $table->index('created_at');
         });
     }

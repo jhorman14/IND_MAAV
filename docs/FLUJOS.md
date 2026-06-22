@@ -37,7 +37,7 @@ flowchart TD
     I -->|No| J[Error de Servidor]
     J --> K[Notificar Usuario]
     
-    I -->|Sí| L[Generar Token JWT]
+    I -->|Sí| L[Generar token de acceso (Sanctum)]
     L --> M[Guardar Token en LocalStorage]
     M --> N[Enviar Email de Verificación]
     N --> O[Redirigir a Dashboard]
@@ -56,22 +56,22 @@ sequenceDiagram
     participant BD
     
     Usuario->>Frontend: Navega a productos
-    Frontend->>Backend: GET /productos
+    Frontend->>Backend: GET /products
     Backend->>BD: Consultar productos
     BD-->>Backend: Retorna listado
-    Backend-->>Frontend: JSON productos
+    Backend-->>Frontend: JSON (productos)
     Frontend-->>Usuario: Mostrar catálogo
     
     Usuario->>Frontend: Selecciona producto
-    Frontend->>Backend: GET /productos/1
+    Frontend->>Backend: GET /products/1
     Backend->>BD: Consultar detalles
     BD-->>Backend: Datos producto
     Backend-->>Frontend: Detalles completos
     Frontend-->>Usuario: Mostrar detalles
     
     Usuario->>Frontend: Agrega al carrito
-    Frontend->>Backend: POST /carrito/agregar
-    Backend->>BD: Crear cart_item
+    Frontend->>Backend: (si existe) POST /cart/items
+    Backend->>BD: Crear cart_item (si implementado)
     BD-->>Backend: Confirmación
     Backend-->>Frontend: Item agregado
     Frontend-->>Usuario: Carrito actualizado
@@ -79,7 +79,7 @@ sequenceDiagram
     Usuario->>Frontend: Procede al checkout
     Frontend-->>Usuario: Mostrar resumen
     Usuario->>Frontend: Completa datos envío
-    Frontend->>Backend: POST /ordenes
+    Frontend->>Backend: (si existe) POST /orders
     Backend->>BD: Crear orden
     Backend->>BD: Crear order_items
     BD-->>Backend: Orden creada

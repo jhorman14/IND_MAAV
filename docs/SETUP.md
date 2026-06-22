@@ -24,8 +24,8 @@
 
 | Software | Versión | Descripción |
 |----------|---------|-------------|
-| **PHP** | 8.0+ | Motor de backend |
-| **Node.js** | 16.0+ | Runtime para npm y frontend |
+| **PHP** | 8.3+ | Motor de backend |
+| **Node.js** | 18.0+ | Runtime para npm y frontend |
 | **npm** | 8.0+ | Gestor de paquetes JavaScript |
 | **PostgreSQL** | 13.0+ | Base de datos |
 | **Composer** | 2.0+ | Gestor de paquetes PHP |
@@ -50,7 +50,11 @@ npm --version
 psql --version
 # Debe mostrar: psql (PostgreSQL) X.X.X
 
-# Composer
+// Testing en Frontend
+
+```javascript
+// En la consola del navegador
+fetch('http://localhost:8000/api/v1/products')
 composer --version
 # Debe mostrar: Composer X.X.X
 
@@ -180,10 +184,9 @@ MAIL_PASSWORD=xxxxx
 MAIL_FROM_ADDRESS=noreply@indmaav.com
 MAIL_FROM_NAME="${APP_NAME}"
 
-# JWT
-JWT_SECRET=your-secret-key-here
-JWT_ALGORITHM=HS256
-JWT_TTL=86400
+# Laravel Sanctum
+# Laravel Sanctum se usa para autenticación de API token Bearer.
+# No se requieren variables JWT adicionales en el `.env`.
 
 # MercadoPago
 MERCADOPAGO_ACCESS_TOKEN=APP_USR_XXXX
@@ -208,11 +211,7 @@ AWS_BUCKET=ind-maav-uploads
 # Instalar dependencias de composer
 composer install
 
-# Instalar paquetes específicos requeridos
-composer require tymon/jwt-auth
-composer require laravel/sanctum
-composer require spatie/laravel-query-builder
-composer require spatie/laravel-activitylog
+# Laravel Sanctum ya está incluido en `backend/composer.json`
 ```
 
 ### 6. Estructura de Directorios Backend
@@ -461,10 +460,9 @@ DB_DATABASE=ind_maav
 DB_USERNAME=postgres
 DB_PASSWORD=password
 
-# JWT
-JWT_SECRET=secret-key-aqui
-JWT_TTL=86400
-JWT_ALGORITHM=HS256
+# Laravel Sanctum
+# Laravel Sanctum se usa para autenticación de API token Bearer.
+# No se requieren variables `JWT_*` en el `.env` cuando se usa Sanctum.
 
 # Mail
 MAIL_MAILER=smtp
@@ -586,25 +584,34 @@ Guardar el token retornado.
 ### 3. Obtener Perfil
 
 ```bash
-curl -X GET http://localhost:8000/api/v1/usuarios/me \
+curl -X GET http://localhost:8000/api/v1/users/me \
   -H "Authorization: Bearer {token}"
 ```
 
 ### 4. Listar Productos
 
 ```bash
-curl -X GET "http://localhost:8000/api/v1/productos?page=1&per_page=12"
+curl -X GET "http://localhost:8000/api/v1/products?page=1&per_page=12"
 ```
 
-### 5. Agregar al Carrito
+### 5. Crear producto de prueba (requiere autenticación)
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/carrito/agregar \
+curl -X POST http://localhost:8000/api/v1/products \
   -H "Authorization: Bearer {token}" \
   -H "Content-Type: application/json" \
   -d '{
-    "producto_id": 1,
-    "cantidad": 2
+    "name": "Producto de prueba",
+    "description": "Descripción breve",
+    "price": 125000,
+    "weight_kg": 1.5,
+    "dimensions_width_mm": 300,
+    "dimensions_depth_mm": 200,
+    "dimensions_height_mm": 150,
+    "available_quantity": 10,
+    "slug": "producto-de-prueba",
+    "visible_public": true,
+    "category_id": 1
   }'
 ```
 
@@ -612,7 +619,7 @@ curl -X POST http://localhost:8000/api/v1/carrito/agregar \
 
 ```javascript
 // En la consola del navegador
-fetch('http://localhost:8000/api/v1/productos')
+fetch('http://localhost:8000/api/v1/products')
   .then(r => r.json())
   .then(data => console.log(data))
 ```

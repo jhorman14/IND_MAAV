@@ -103,7 +103,8 @@ DB_PASSWORD=contraseña_db
 APP_URL=https://indmaav.com
 FRONTEND_URL=https://indmaav.com
 
-JWT_SECRET=xxx-muy-secreto-xxx
+# Usamos Laravel Sanctum para autenticación de tokens.
+# No es necesario configurar un `JWT_SECRET` para Sanctum.
 
 MERCADOPAGO_MODE=production
 MERCADOPAGO_ACCESS_TOKEN=APP_USR_XXXX

@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('promotion_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('promocion_id');
-            $table->foreign('promocion_id')->references('id')->on('promotions')->onDelete('cascade');
-            $table->uuid('usuario_id')->nullable();
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->uuid('orden_id')->nullable();
-            $table->foreign('orden_id')->references('id')->on('orders')->onDelete('set null');
-            $table->timestamp('fecha_uso')->useCurrent();
+            $table->unsignedBigInteger('promotion_id');
+            $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');
+            $table->uuid('order_id')->nullable();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            $table->decimal('discount_amount', 12, 2);
+            $table->timestamps();
 
-            $table->index('promocion_id');
-            $table->index('usuario_id');
+            $table->index('promotion_id');
+            $table->index('order_id');
         });
     }
 

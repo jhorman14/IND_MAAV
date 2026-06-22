@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('producto_id');
-            $table->foreign('producto_id')->references('id')->on('products')->onDelete('cascade');
-            $table->integer('cantidad')->unsigned();
-            $table->decimal('precio_snapshot', 12, 2);
+            $table->uuid('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->integer('quantity')->unsigned();
+            $table->decimal('price_snapshot', 12, 2);
             $table->timestamps();
 
-            $table->unique(['usuario_id', 'producto_id']);
-            $table->index('usuario_id');
-            $table->index('producto_id');
+            $table->unique(['user_id', 'product_id']);
+            $table->index('user_id');
+            $table->index('product_id');
         });
     }
 

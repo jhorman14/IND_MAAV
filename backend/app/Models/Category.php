@@ -10,10 +10,14 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombre',
-        'descripcion',
-        'imagen_url',
-        'seo_slug',
+        'name',
+        'description',
+        'image',
+        'slug',
+        'icon',
+        'parent_category_id',
+        'order',
+        'status',
     ];
 
     protected $casts = [

@@ -12,13 +12,13 @@ class AuditLog extends Model
     protected $table = 'audit_logs';
 
     protected $fillable = [
-        'usuario_id',
-        'tabla_afectada',
-        'id_registro',
-        'tipo_operacion',
-        'datos_anteriores',
-        'datos_nuevos',
-        'ip_cliente',
+        'user_id',
+        'table_name',
+        'record_id',
+        'operation_type',
+        'previous_data',
+        'new_data',
+        'client_ip',
         'user_agent',
     ];
 
@@ -29,6 +29,6 @@ class AuditLog extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'usuario_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
