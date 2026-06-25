@@ -14,25 +14,37 @@ export default function LoginPage({ onLoginSuccess }) {
 
     try {
       const response = await authService.login({ email, password });
-      const token = response.data?.token || response.token;
-      const user = response.data || response;
+      const payload = response?.data;
 
-      if (token) {
-        localStorage.setItem('auth_token', token);
-        localStorage.setItem('user', JSON.stringify(user));
-
-        if (onLoginSuccess) {
-          onLoginSuccess(token, user);
-        }
-
-        setEmail('');
-        setPassword('');
-      } else {
-        setError('No se recibió token');
+      if (!response?.success) {
+        setError(response?.message || 'Credenciales inválidas');
+        return;
       }
+
+      if (!payload?.token) {
+        setError('No se recibió token de sesión');
+        return;
+      }
+
+      const user = {
+        id: payload.id,
+        nombre: payload.nombre,
+        email: payload.email,
+        rol: payload.rol,
+      };
+
+      localStorage.setItem('auth_token', payload.token);
+      localStorage.setItem('user', JSON.stringify(user));
+
+      if (onLoginSuccess) {
+        onLoginSuccess(payload.token, user);
+      }
+
+      setEmail('');
+      setPassword('');
     } catch (err) {
       console.error('Error en login:', err);
-      setError(err.message || 'Error al iniciar sesión');
+      setError(err?.response?.message || err.message || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }
